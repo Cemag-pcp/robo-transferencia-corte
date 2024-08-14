@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Selenium App</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function acionarScript() {
+            // Desabilita o botão para evitar cliques múltiplos
+            $('#acionar').prop('disabled', true);
+
+            // Envia uma solicitação AJAX para acionar o script
+            $.get('/acionar-script', function(data) {
+                if (data.success) {
+                    // Atualiza a interface (opcional)
+                    $('#status').text('Script em execução...');
+                }
+            });
+        }
+
+        function reiniciarScript() {
+            // Habilita o botão
+            $('#acionar').prop('disabled', false);
+
+            // Atualiza a interface (opcional)
+            $('#status').text('Pronto para acionar o script novamente.');
+        }
+    </script>
+</head>
+<body>
+    <h1>Acionador robinho</h1>
+    <button id="acionar" onclick="acionarScript()">Iniciar</button>
+    <p id="status">Pronto para acionar.</p>
+</body>
+</html>
