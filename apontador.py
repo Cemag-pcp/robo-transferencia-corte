@@ -107,7 +107,7 @@ def acessar_innovaro():
     # link1 = 'http://devcemag.innovaro.com.br:81/sistema'
     # link3 = 'https://hcemag.innovaro.com.br/sistema'
     # nav = webdriver.Chrome(r"C:\Users\Engine\chromedriver.exe")
-    nav = webdriver.Chrome(r"C:\Users\Engine\chromedriver.exe")
+    nav = webdriver.Chrome("chromedriver.exe")
     # nav = webdriver.Chrome()
     nav.maximize_window()
     time.sleep(2)
@@ -1852,6 +1852,10 @@ def preenchendo_corte(nav, data, pessoa, peca, qtde, wks1, c, i, mortas, chapa,e
         #Processo
         WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).click()
         time.sleep(1)
+        WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys(Keys.CONTROL + 'a')
+        time.sleep(1)
+        WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys(Keys.DELETE)
+        time.sleep(1)
         WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys('S')
         time.sleep(4)                                                       
         WebDriverWait(nav, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys(Keys.TAB)
@@ -1859,8 +1863,12 @@ def preenchendo_corte(nav, data, pessoa, peca, qtde, wks1, c, i, mortas, chapa,e
         processo_texto = WebDriverWait(nav, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/div"))).text
 
         if processo_texto == '':
-            WebDriverWait(nav, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/div"))).click()
-            time.sleep(1)                                                                   
+            WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).click()
+            time.sleep(1)
+            WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys(Keys.CONTROL + 'a')
+            time.sleep(1)
+            WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys(Keys.DELETE)
+            time.sleep(1)
             WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys('S')
             time.sleep(4)                                                       
             WebDriverWait(nav, 3).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[1]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[" + str(c) + "]/td[14]/div/input"))).send_keys(Keys.TAB)
@@ -1951,6 +1959,7 @@ def preenchendo_corte(nav, data, pessoa, peca, qtde, wks1, c, i, mortas, chapa,e
                 
                 texto_erro = WebDriverWait(nav, 30).until(EC.presence_of_element_located((By.XPATH, '//*[@id="errorMessageBox"]/div[2]/table/tbody/tr[1]/td[2]/div/div/span[1]'))).text
                 erro = 1
+                print(f"{texto_erro}, erro = {erro}")
                 WebDriverWait(nav, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="confirm"]'))).click()
 
                 time.sleep(1)
@@ -2012,6 +2021,7 @@ def verificar_chapa_cadastrada(nav,chapa,espessura_nova,tb_espessuras,wks1,i,err
     chapa_atual = chapa_atual[:6]
     espessura_antiga = float(tb_espessuras[tb_espessuras['CÓDIGO'] == chapa_atual].ESPESSURA.values[0].replace(" mm","").replace(",","."))
 
+    print("Erro: ",erro)
     if chapa_atual==chapa and erro==0:
         print('chapa igual, não precisa fazer nada')
         wks1.update('M' + str(i+1), [['OK ROBINHO ' + data_hoje() + ' ' + hora_atual()]])
