@@ -114,7 +114,7 @@ def acessar_innovaro():
     chromedriver_path = "chromedriver.exe"
     
     try:
-        nav = webdriver.Chrome()
+        nav = webdriver.Chrome(r'C:\Users\pcp2\apontamento_corte\robo-transferencia-corte\chromedriver_extracted\chromedriver-win32\chromedriver.exe')
     except SessionNotCreatedException:
         chrome_driver_path = verificar_chrome_driver()
         nav = webdriver.Chrome(chrome_driver_path)
@@ -2037,6 +2037,13 @@ def verificar_chapa_cadastrada(nav,chapa,espessura_nova,tb_espessuras,wks1,i,err
     #chapa atual cadastrada
     WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[2]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[7]"))).click()
     chapa_atual = WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[2]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[9]"))).text
+
+    if chapa_atual == '':
+        wks1.update('M' + str(i+1), [['Sem consumo']])
+        nav.switch_to.default_content()
+        return
+
+    chapa_atual = WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[2]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[9]"))).text
     peso_antigo = float(WebDriverWait(nav, 10).until(EC.element_to_be_clickable((By.XPATH, "/html/body/table/tbody/tr[2]/td/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[3]/td[26]"))).text)
     chapa_atual = chapa_atual[:6]
     resultado_filtrado = tb_espessuras[tb_espessuras['CÓDIGO'] == chapa_atual]
@@ -3496,9 +3503,9 @@ def funcao_main():
 
             datas = [data_hoje(),  data_ontem()]#, data_sabado()]
             #datas = [data_hoje()]#, data_sabado()]
-            datas = ['30/09/2024']
+            # datas = ['30/09/2024']
         else:
-
+            # datas = ['30/09/2024']
             datas = [data_hoje(), data_ontem(), data_sabado(), data_sexta()]
 
         #datas = ['25/04/2023','26/04/2023','27/04/2023','28/04/2023','29/04/2023','30/04/2023']
